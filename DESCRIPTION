@@ -1,18 +1,18 @@
 Package: divest
-Version: 0.2.0
-Date: 2017-01-13
+Version: 0.3.0
+Date: 2017-03-21
 Title: Get Images Out of DICOM Format Quickly
 Author: Jon Clayden, based on dcm2niix by Chris Rorden
 Maintainer: Jon Clayden <code@clayden.org>
-Imports:    Rcpp (>= 0.11.0),    RNifti (>= 0.3.0)
-Suggests:    testthat
+Imports:
+    Rcpp (>= 0.11.0),
+    RNifti (>= 0.3.0)
+Suggests:
+    testthat
 LinkingTo: Rcpp, RNifti
 Description: Provides tools to convert DICOM-format files to NIfTI-1 format.
 License: BSD_3_clause + file LICENCE
 URL: https://github.com/jonclayden/divest
 BugReports: https://github.com/jonclayden/divest/issues
 Encoding: UTF-8
-RoxygenNote: 5.0.1
-biocViews:
-Remotes: neuroconductor/RNifti@abba446af4c87e69d1c787e47f5ad1ca56d0515c
-
+RoxygenNote: 6.0.1

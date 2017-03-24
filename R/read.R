@@ -4,12 +4,38 @@
     return (structure(table[ordering,], descriptions=attr(table,"descriptions")[ordering], paths=attr(table,"paths")[ordering], ordering=ordering, class=c("divest","data.frame")))
 }
 
+.readDirectory <- function (path, flipY, crop, forceStack, verbosity, labelFormat, scanOnly)
+{
+    if (verbosity < 0L)
+    {
+        output <- NULL
+        connection <- textConnection("output", "w", local=TRUE)
+        sink(connection)
+        on.exit({
+            sink()
+            cat(paste(c(grep("WARNING|ERROR", output, ignore.case=TRUE, perl=TRUE, value=TRUE), ""), collapse="\n"))
+        })
+    }
+    
+    .Call(C_readDirectory, path, flipY, crop, forceStack, verbosity, labelFormat, scanOnly)
+}
+
 #' Read one or more DICOM directories
 #' 
 #' These functions are R wrappers around the DICOM-to-NIfTI conversion routines
 #' provided by \code{dcm2niix}. They scan directories containing DICOM files,
 #' potentially pertaining to more than one image series, read them and/or merge
 #' them into a list of \code{niftiImage} objects.
+#' 
+#' The \code{labelFormat} argument describes the string format used for image
+#' labels. Valid codes, each escaped with a percentage sign, include \code{a}
+#' for coil number, \code{c} for image comments, \code{d} for series
+#' description, \code{e} for echo number, \code{f} for the source directory,
+#' \code{i} for patient ID, \code{l} for the procedure step description,
+#' \code{m} for manufacturer, \code{n} for patient name, \code{p} for protocol
+#' name, \code{q} for scanning sequence, \code{s} for series number, \code{t}
+#' for the date and time, \code{u} for acquisition number and \code{z} for
+#' sequence name.
 #' 
 #' @param path A character vector of paths to scan for DICOM files. Each will
 #'   examined in turn. The default is the current working directory.
@@ -22,8 +48,11 @@
 #'   always be stacked together as long as their dimensions are compatible. If
 #'   \code{FALSE}, the default, images will be separated if they differ in
 #'   echo, coil or exposure number, echo time, protocol name or orientation.
-#' @param verbosity Integer value between 0 and 3, controlling the amount of
-#'   output generated during the conversion.
+#' @param verbosity Integer value between -1 and 3, controlling the amount of
+#'   output generated during the conversion. A negative value will suppress all
+#'   output from \code{dcm2niix} except warnings and errors.
+#' @param labelFormat A \code{\link{sprintf}}-style string specifying the
+#'   format to use for the final image labels. See Details.
 #' @param interactive If \code{TRUE}, the default in interactive sessions, the
 #'   requested paths will first be scanned and a list of DICOM series will be
 #'   presented. You may then choose which series to convert.
@@ -39,7 +68,7 @@
 #' readDicom(path, interactive=FALSE)
 #' @author Jon Clayden <code@@clayden.org>
 #' @export
-readDicom <- function (path = ".", flipY = TRUE, crop = FALSE, forceStack = FALSE, verbosity = 0L, interactive = base::interactive())
+readDicom <- function (path = ".", flipY = TRUE, crop = FALSE, forceStack = FALSE, verbosity = 0L, labelFormat = "T%t_N%n_S%s", interactive = base::interactive())
 {
     readFromTempDirectory <- function (tempDirectory, files)
     {
@@ -65,14 +94,14 @@ readDicom <- function (path = ".", flipY = TRUE, crop = FALSE, forceStack = FALS
         if (!all(success))
             stop("Cannot symlink or copy files into temporary directory")
         
-        .Call("readDirectory", tempDirectory, flipY, crop, forceStack, verbosity, FALSE, PACKAGE="divest")
+        .readDirectory(tempDirectory, flipY, crop, forceStack, verbosity, labelFormat, FALSE)
     }
     
     results <- lapply(path, function(p) {
         if (interactive)
         {
             p <- path.expand(p)
-            info <- .sortInfoTable(.Call("readDirectory", p, flipY, crop, forceStack, 0L, TRUE, PACKAGE="divest"))
+            info <- .sortInfoTable(.readDirectory(p, flipY, crop, forceStack, min(0L,verbosity), labelFormat, TRUE))
             
             nSeries <- nrow(info)
             if (nSeries < 1)
@@ -85,7 +114,7 @@ readDicom <- function (path = ".", flipY = TRUE, crop = FALSE, forceStack = FALS
             selection <- readline("\nSelected series: ")
             if (selection == "")
             {
-                allResults <- .Call("readDirectory", p, flipY, crop, forceStack, verbosity, FALSE, PACKAGE="divest")
+                allResults <- .readDirectory(p, flipY, crop, forceStack, verbosity, labelFormat, FALSE)
                 return (allResults[attr(info,"ordering")])
             }
             else if (selection == "0")
@@ -102,7 +131,7 @@ readDicom <- function (path = ".", flipY = TRUE, crop = FALSE, forceStack = FALS
             }
         }
         else
-            .Call("readDirectory", path.expand(p), flipY, crop, forceStack, verbosity, FALSE, PACKAGE="divest")
+            .readDirectory(path.expand(p), flipY, crop, forceStack, verbosity, labelFormat, FALSE)
     })
     
     return (do.call(c, results))
@@ -112,6 +141,6 @@ readDicom <- function (path = ".", flipY = TRUE, crop = FALSE, forceStack = FALS
 #' @export
 scanDicom <- function (path = ".", forceStack = FALSE, verbosity = 0L)
 {
-    results <- lapply(path, function(p) .Call("readDirectory", path.expand(p), TRUE, FALSE, forceStack, verbosity, TRUE, PACKAGE="divest"))
+    results <- lapply(path, function(p) .readDirectory(path.expand(p), TRUE, FALSE, forceStack, verbosity, "", TRUE))
     .sortInfoTable(do.call(rbind, results))
 }

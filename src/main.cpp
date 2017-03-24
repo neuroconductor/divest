@@ -9,17 +9,11 @@
 
 using namespace Rcpp;
 
-RcppExport SEXP initialise ()
-{
-BEGIN_RCPP
-    niftilib_register_all();
-END_RCPP
-}
-
-RcppExport SEXP readDirectory (SEXP path_, SEXP flipY_, SEXP crop_, SEXP forceStack_, SEXP verbosity_, SEXP scanOnly_)
+RcppExport SEXP readDirectory (SEXP path_, SEXP flipY_, SEXP crop_, SEXP forceStack_, SEXP verbosity_, SEXP labelFormat_, SEXP scanOnly_)
 {
 BEGIN_RCPP
     const std::string path = as<std::string>(path_);
+    const std::string labelFormat = as<std::string>(labelFormat_);
     
     TDCMopts options;
     options.isGz = false;
@@ -30,13 +24,15 @@ BEGIN_RCPP
     options.isRGBplanar = false;
     options.isOnlySingleFile = false;
     options.isForceStackSameSeries = as<bool>(forceStack_);
+    options.isIgnoreDerivedAnd2D = false;
+    options.isPhilipsFloatNotDisplayScaling = true;
     options.isCrop = as<bool>(crop_);
     options.isScanOnly = as<bool>(scanOnly_);
     options.isVerbose = as<int>(verbosity_);
-    options.compressFlag = kCompressNone;
+    options.compressFlag = kCompressYes;
     strcpy(options.indir, path.c_str());
     strcpy(options.outdir, "");
-    strcpy(options.filename, "");
+    strcpy(options.filename, labelFormat.c_str());
     strcpy(options.pigzname, "");
     
     ImageList images;
@@ -118,4 +114,22 @@ BEGIN_RCPP
     else
         Rf_error("DICOM scan failed");
 END_RCPP
+}
+
+static const R_CallMethodDef callMethods[] = {
+  { "readDirectory", (DL_FUNC) &readDirectory, 7 },
+  { NULL, NULL, 0 }
+};
+
+extern "C" {
+
+void R_init_divest (DllInfo *info)
+{
+    R_registerRoutines(info, NULL, callMethods, NULL, NULL);
+    R_useDynamicSymbols(info, FALSE);
+    R_forceSymbols(info, TRUE);
+    
+    niftilib_register_all();
+}
+
 }
