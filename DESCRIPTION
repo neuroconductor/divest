@@ -13,6 +13,6 @@ URL: https://github.com/jonclayden/divest
 BugReports: https://github.com/jonclayden/divest/issues
 Encoding: UTF-8
 RoxygenNote: 6.0.1
-Remotes: neuroconductor/RNifti@3e0162e8ebdd61addc17bcb407ab3e92f07c29b8
 biocViews:
+Remotes: neuroconductor/RNifti@ec58f8f64805308e728808a0c39665a326aff7ec
 
