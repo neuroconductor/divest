@@ -4,8 +4,10 @@ Date: 2017-06-02
 Title: Get Images Out of DICOM Format Quickly
 Author: Jon Clayden, based on dcm2niix by Chris Rorden
 Maintainer: Jon Clayden <code@clayden.org>
-Imports:    Rcpp (>= 0.11.0),    RNifti (>= 0.3.0)
-Suggests:    testthat
+Imports: Rcpp (>= 0.11.0),    RNifti (>= 0.3.0)
+Suggests: 
+    testthat,
+    covr
 LinkingTo: Rcpp, RNifti
 Description: Provides tools to convert DICOM-format files to NIfTI-1 format.
 License: BSD_3_clause + file LICENCE
@@ -14,5 +16,4 @@ BugReports: https://github.com/jonclayden/divest/issues
 Encoding: UTF-8
 RoxygenNote: 6.0.1
 biocViews:
-Remotes: neuroconductor/RNifti@8dfcae5774bffdf1ff47a78748eb8b2c62270608
-
+Remotes: neuroconductor/RNifti@d463e6d491ab93fe5a9a4fea68ac87812be82d3f
