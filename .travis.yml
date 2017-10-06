@@ -1,20 +1,12 @@
-
-
-
-
-
-
-
 language: r
 sudo: false
 cache: packages
-
 warnings_are_errors: true
-bioc_required: yes
-use_bioc: yes
-r_check_args: --as-cran
+bioc_required: true
+use_bioc: true
+r_check_args: "--as-cran"
 r:
 - release
-
-
-
+deploy:
+  api-key:
+    secure: hfFPOPwgQR9oGvGmPBxgr99b8KokAxREZZghKIokQ7RPt93WdUlNUXaZHJrDt6Ad6OBIgYIRj8cFm1i+npyl+lrkj5UpE9AkS7cku0qUyxKy9cMFfsRfeYVB7LFeZoyotN1bCH8QHk+h0VwUqRMRRR2Nx+/Kcdkre8Pz3z5Itd+meM4IH+mjtcitvI1ItPaLoeSWaXMsRmvIqnWz4qJLqCbok2e3IqfvJsY4TyTzh2i4ElpxHPcQqDDz2xvE7EDzlmLl0U88Csd61ssRMwep6IGlVneteWMBEjjSgNaG2JFdlU9G/oYHffjbIjCcgaRXpy//PGmDWt6t9XR94Gq/aQkhqFt7Bpt2c9Z5cY1On+yrisWlTTSXl7ZcfAflLAoXjUcE2EE+kMDDBLJbzi4rv949fhkuo8N07Xyr5fpCU/aQMCwIkjYwUmBhLmi/H05Jrl+jS8aXZmhy1vpI1UuEAweq3kpd1sgzj3drMFc/90mtlvzHptR/NfWlYAjOD8yalxlbJ6XK8I/GeU3GpBmDZHBLg2DF8Et+DwPXhH2lKWha9zEHHGckbGXxeydJuVma6K9I0jzZ84UKCggHn+gwNuMZDQRATMQSv7z3ljGR4u9GHeyUA9I2ZHDaaNLcTWOKE1hg1fBld8+kiE2xYzqsXX86zhEtWKsM8W54MUJm6lw=
