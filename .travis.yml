@@ -38,6 +38,9 @@ before_install:
 - export PACKAGE_NAME=`package_name`
 - if [[ "${PACKAGE_NAME}" == "waveslim" ]]; then fftw_install ; fi
 - if [[ "${PACKAGE_NAME}" == "dti" ]]; then gsl_install ; fi
+- if [[ "${PACKAGE_NAME}" == "ROpenCVLite" ]]; then shopt -s expand_aliases ; x=`Rscript
+  -e "cat(Sys.which('R'))"` ; alias R="travis_wait 100 ${x}" ; x=`Rscript -e "cat(Sys.which('Rscript'))"`
+  ; alias Rscript="travis_wait 100 ${x}" ; fi
 after_success:
 - cat ${PACKAGE_NAME}.Rcheck/00install.out
 - cat ${PACKAGE_NAME}.Rcheck/00check.log
@@ -55,7 +58,7 @@ deploy:
   on:
     tags: true
   api-key:
-    secure: M0lxV03gZeYyjcTx4t+gGUXhwVu2VvaTX+mkgYaNeyb/jpBmuuc5/4zexQvRycy0RqfvnS91/Um8RkipArOWx1zQ0SnIt84u3jZBEnxBYAkVgwUuiPtkgWFGc07f6yh1z4gH0mEKjVc2ybFFAl1cxx1vvn+MdOC7rXB7VYsNPXGo2StyVIX2hSrc/SxyKxDvV2gevrEUYg9z3YXZcEIKd43OJkYiUINcNcHtlaVXgMh3aa864bfpItbNjwySww28uWtNArPOeTKC4Y2Mmtm3hhYHL93Nx3J6xl3jVA57WLCRtnu3rBvCP34r7aep+8Oy3tiXQuXfJqZM8L3Xoaz+YFYXnuJHN2b1oqKJEHJasXDDMSCQPtAA+h7kgXJoDYtqGuAP17z1pHSBQi3rNLY41eUeuutqM6Sv9hZKF8MBhoWIGzbb7ed3g+FkRU6hodqPacNbzeAlcUX134yea8Kd/EARKr9xvE0ERHFU9rMYj06jeOdDKYJEnpdYoI2kP5fT4SG2elutqxgcPJcN5y0K8vushOEkcr7OIGKdt/0gtk+xp4zq+ncCgE9FT6HkExgfzVClnGjaDJ8TqJjlJ4dmhLbq5E/CVcBVlhXya0xfRY65SMxcGxA1bsa/ICtjILj+78Ei8YaUYGxH7WfoJd/SXm9su31tU6WLj1W5g8lryIc=
+    secure: kfoCD+tEulS0x0p9u/PqbmP6nThWuauQvD0LK95VnEy7aMtzFzJNMoUjNupZOMYj45R2P1aX/2dTb4QtYIwJ0WC1huCpl6NCype9pr1KVGnp1GgJtQw4AXvGR0c4HzK0AWnRZ9TqWsCUsR4pJ0kzLYatjxTBGh9FZlnCmM+Cr5pc5fTZIL7LlYdSo5qnyCwDfLw+/pUw+MyldKWZfZw5k2d4lTT+BY3AkYNmHo64RMuLRib2KonYqWCxDIG4/BXRImobj3MBF9qulQ8fCl58eJ6LBfoMlUWEctC8+5+pvTy76Q4JWcv0xu/5Cs8N13rGUpQ89AS+SODu43j4lCABNB8Cn1U9u5fdgpeQMUKAmil3aA+EEBdLq00NncZOsYcRjRyqbVnPxBd2QOcKPt4SCWmdWyCD8hshlsUKE6W0/LnbjlAK3aWqBlpIyhu/U/IhT2FkucwtkJCCo1RHz52s1SLTwAe6zF632L3sSHluVtnVYi4FFskeYXSGomt0PvKaIzbicfGcIDwKcpgvK8sfcKdJ/5vGgv1WfK5r+eJAZCiuc+Bw3c+qMMdOHb3JpP0TTmpG/aGuzNryfJgTyHlhC59MglajeUt8fGTOD0cDyyPGvn6pueOTy7Z+8xSJRMS8YhQZWpGbGFrcRuy+qAfJKGTDDSmQphKgtMC5wru0jCY=
 after_deploy:
-- if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then Rscript -e 'covr::coveralls(type =
-  "all")' ; fi
+- if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then travis_wait 100 Rscript -e 'covr::coveralls(type
+  = "all")' ; fi
