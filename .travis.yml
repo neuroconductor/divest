@@ -21,7 +21,7 @@ env:
   - RGL_USE_NULL=TRUE
   - PROJECT_NAME=neuroconductor
   - DISPLAY=:99.0
-r_check_args: "--as-cran"
+r_check_args: "--as-cran --install-args=--build"
 before_install:
 - export PROJ_DIR=`basename $PWD`
 - fname=travis_helpers.sh
@@ -47,7 +47,6 @@ after_failure:
 - cat ${PACKAGE_NAME}.Rcheck/00install.out
 - cat ${PACKAGE_NAME}.Rcheck/00check.log
 before_deploy:
-- travis_wait 100 R CMD INSTALL --build ${PKG_TARBALL}
 - if [[ "${TRAVIS_OS_NAME}" = "osx" ]]; then rm -f *.tar.gz; fi
 deploy:
   provider: releases
@@ -57,7 +56,7 @@ deploy:
   on:
     tags: true
   api-key:
-    secure: oLaTNyGKu7uSsD70OxDrvPioEY3/DEiQkeTHwg5unUJiajuARFMDKECDNZjlbpirPqlSOsQid1F6RaPw5tlwL690M/7GmfW2wEJZAjOJ9jkPZTW0T1Nu558WoLCNn3cMsOfimKMZVscJ5YxY3mW+TTqeGAQ3QZnuS8kYjHz4gJWu//2m68OBlwryEgr5TFk4D+ypqTI5sBuMvpeofzmvtCpdNGTIKdIGuKLgCQfzWQF3JEQSEaEdmgdD22DPPvccOabYihmh9F2Elgc77XKIb9MT7bez9KceW1Tou4yjG6G0+rV98zw3wQgcm4YiV1wq5v6/Ut6VXL7vQVp8nw6xSNwg7WVt+TAA+drwMpzI+PoqGE7Yr7S2PV8a7m4RFO5xHK9xYTH9xiM0HNo4C3jq1eidsQ14izB/tuFMww8gbS6+vq76vBNPqhfMIB2OInoliypr3xNivPQNDZVkQQuk2Rm8CockcezMXQDLqiBLUQdBhLHsHG0kHt003SQmy4IA+Bpek7ASRCKYyH6WSvdVYAhPp7yJGXpCH0+HVddS7J9IdzYwSv8kanGz0yS2mcTfzxaWwUnu9mYLBDI939wPatI4i9BgP3iDqjEUeFeHE8jWr4jsmQDK7AWiRWp8cSpd951bTFXAJu9xxoKeEKvufQ05Xt7DMG1iX3gmH9CIF/0=
+    secure: Bf92NkhOg1nS+XkCsN4zNZWu9RWFDK0n1SYqE92dVaPqt5z95gg/Wp4sBHRYvy6IQTqaZyOYrCrIRhUhlMrydv55CxQBP90gBf0W8wdvPl4L8TaDQVeQ5p5DFjN9heWajJ1wiU2YENimXvwgcrtDZrYzGxzO0Dz7Aqy/QtHNXGmYTlWJe0ZWX3V0ulOUVBLUe+9Wj8BjaiJ7xNVdmZ4E5BiQM3ErJxd3CSm0J2WCtdoIJfS9qtBX0dSuqAy2WjA9GNKWed6ncE4EAav11Mf5mD1BsEkQr0P+PZxDTdGUfwlVsOQFy7DUkLKrS9eWdihetjBI9PYKWPvDOgTW8EctjCk4tXHmxCcyl52m1ww7GiF0yWPLSzmUfsM3VlL1nhQz3qiiT5P29nnAnlGWMY5cr9/p1qrDHk0exo/inS6SGRn3lqWULlRCMTU/IExZQtVa4ZdDuoIAda8MSrav/LY4FkSwA3Z3mg229pWOlb7oc11uu6tMMks5ucN+DK1NYIRjnPoh6Qz+bE+2ZS9iJxvQtLdhl7r89fsNLdw9IaoswCelj0krDAY1oFb/SIERszat1rBZTiOKAXqiKmykJs4gDtSuUTqRvgNfmJRd28CuRi3xCeJUVqaFBjh7Ik9fUlnl/3M7+Chklvu+GgWnf5F/WnAVIiQOfrEOEFMV4Bx76QQ=
 after_deploy:
 - if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then travis_wait 100 Rscript -e 'covr::coveralls(type
   = "all")' ; fi
