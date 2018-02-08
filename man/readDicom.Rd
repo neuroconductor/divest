@@ -11,7 +11,7 @@ readDicom(path = ".", subset = NULL, flipY = TRUE, crop = FALSE,
   interactive = base::interactive())
 
 sortDicom(path = ".", forceStack = FALSE, verbosity = 0L,
-  labelFormat = "T\%t_N\%n_S\%s", keepUnsorted = FALSE)
+  labelFormat = "T\%t_N\%n_S\%s", nested = TRUE, keepUnsorted = FALSE)
 
 scanDicom(path = ".", forceStack = FALSE, verbosity = 0L,
   labelFormat = "T\%t_N\%n_S\%s")
@@ -19,8 +19,10 @@ scanDicom(path = ".", forceStack = FALSE, verbosity = 0L,
 \arguments{
 \item{path}{A character vector of paths to scan for DICOM files. Each will
 examined in turn. The default is the current working directory.
-Alternatively, for \code{readDicom}, a data frame like the one returned by
-\code{scanDicom}, from which file paths will be read.}
+\code{readDicom} (only) will accept paths to individual DICOM files,
+rather than directories. Alternatively, for \code{readDicom} and
+\code{sortDicom}, a data frame like the one returned by \code{scanDicom},
+from which file paths will be read.}
 
 \item{subset}{If \code{path} is a data frame, an expression which will be
 evaluated in the context of the data frame to determine which series to
@@ -48,6 +50,10 @@ format to use for the final image labels. See Details.}
 \item{interactive}{If \code{TRUE}, the default in interactive sessions, the
 requested paths will first be scanned and a list of DICOM series will be
 presented. You may then choose which series to convert.}
+
+\item{nested}{For \code{sortDicom}, should the sorted files be created
+within the source directory (\code{TRUE}, the default), or in the current
+working directory (\code{FALSE})?}
 
 \item{keepUnsorted}{For \code{sortDicom}, should the unsorted files be left
 in place, or removed after they are copied into their new locations? The

@@ -1,6 +1,6 @@
 ^\.travis\.yml$
 ^appveyor\.yml$
-
+^README.Rmd$
 ^DESCRIPTION\.bak$
 ^\./\.travis\.yml\.bak$
 ^\./appveyor\.yml\.bak$
