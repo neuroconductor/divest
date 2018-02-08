@@ -46,8 +46,10 @@
 #' 
 #' @param path A character vector of paths to scan for DICOM files. Each will
 #'   examined in turn. The default is the current working directory.
-#'   Alternatively, for \code{readDicom}, a data frame like the one returned by
-#'   \code{scanDicom}, from which file paths will be read.
+#'   \code{readDicom} (only) will accept paths to individual DICOM files,
+#'   rather than directories. Alternatively, for \code{readDicom} and
+#'   \code{sortDicom}, a data frame like the one returned by \code{scanDicom},
+#'   from which file paths will be read.
 #' @param subset If \code{path} is a data frame, an expression which will be
 #'   evaluated in the context of the data frame to determine which series to
 #'   convert. Should evaluate to a logical vector.
@@ -68,6 +70,9 @@
 #' @param interactive If \code{TRUE}, the default in interactive sessions, the
 #'   requested paths will first be scanned and a list of DICOM series will be
 #'   presented. You may then choose which series to convert.
+#' @param nested For \code{sortDicom}, should the sorted files be created
+#'   within the source directory (\code{TRUE}, the default), or in the current
+#'   working directory (\code{FALSE})?
 #' @param keepUnsorted For \code{sortDicom}, should the unsorted files be left
 #'   in place, or removed after they are copied into their new locations? The
 #'   default, \code{FALSE}, corresponds to a move rather than a copy. If
@@ -133,7 +138,10 @@ readDicom <- function (path = ".", subset = NULL, flipY = TRUE, crop = FALSE, fo
             readFromTempDirectory(".divest", p)
         }
         else if (!file.exists(p))
+        {
             warning(paste0("Path \"", p, "\" does not exist"))
+            return (NULL)
+        }
         else if (!file.info(p)$isdir)
             .readPath(path.expand(p), flipY, crop, forceStack, verbosity, labelFormat, TRUE, FALSE)
         else if (interactive)
@@ -177,12 +185,18 @@ readDicom <- function (path = ".", subset = NULL, flipY = TRUE, crop = FALSE, fo
 
 #' @rdname readDicom
 #' @export
-sortDicom <- function (path = ".", forceStack = FALSE, verbosity = 0L, labelFormat = "T%t_N%n_S%s", keepUnsorted = FALSE)
+sortDicom <- function (path = ".", forceStack = FALSE, verbosity = 0L, labelFormat = "T%t_N%n_S%s", nested = TRUE, keepUnsorted = FALSE)
 {
-    info <- scanDicom(path, forceStack, verbosity, labelFormat)
+    if (is.data.frame(path))
+        info <- path
+    else
+        info <- scanDicom(path, forceStack, verbosity, labelFormat)
+    
     for (i in seq_len(nrow(info)))
     {
-        directory <- file.path(info$rootPath[i], info$label[i])
+        directory <- info$label[i]
+        if (nested)
+            directory <- file.path(info$rootPath[i], directory)
         if (!file.exists(directory))
             dir.create(directory)
         
