@@ -1,6 +1,8 @@
 ^\.travis\.yml$
 ^appveyor\.yml$
 ^README.Rmd$
+^dcm_qa$
+^dcm_qa.R$
 ^DESCRIPTION\.bak$
 ^\./\.travis\.yml\.bak$
 ^\./appveyor\.yml\.bak$
