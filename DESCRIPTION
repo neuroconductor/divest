@@ -19,4 +19,4 @@ Encoding: UTF-8
 RoxygenNote: 6.0.1
 biocViews:
 Remotes:  
-    neuroconductor/RNifti@07027fede84936329ed783ed425ba4099fb28fc9
+    neuroconductor/RNifti@febe23cebe2cea6e35d2033aacac4e1a4249a4e9
