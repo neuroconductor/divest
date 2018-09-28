@@ -8,9 +8,7 @@ Authors@R: c(person("Jon", "Clayden", email="code@clayden.org",
         role="cph"), person("Pascal", "Gloor", role="cph"))
 Maintainer: Jon Clayden <code@clayden.org>
 Imports: Rcpp (>= 0.11.0), RNifti (>= 0.3.0)
-Suggests: 
-    testthat,
-    covr
+Suggests: testthat, covr
 LinkingTo: Rcpp, RNifti
 Description: Provides tools to convert DICOM-format files to NIfTI-1
         format.
@@ -19,6 +17,6 @@ URL: https://github.com/jonclayden/divest
 BugReports: https://github.com/jonclayden/divest/issues
 Encoding: UTF-8
 RoxygenNote: 6.0.1
+biocViews:
 Remotes:  
-    neuroconductor/RNifti@a57bb39ad2ea2fb3b8759207e89a987cb4e7014c
-biocViews: 
+    neuroconductor/RNifti@b622edfda520cf9ddfde1f43f6673f34cb381dd0
