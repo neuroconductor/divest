@@ -8,12 +8,12 @@
 #ifndef _R_PRINT_H_
 	#define _R_PRINT_H_
 	#include <stdarg.h>
-	#ifdef HAVE_R
+	#ifdef USING_R
 		#define R_USE_C99_IN_CXX
 		#include <R_ext/Print.h>
-		#define printMessage(...) { Rprintf("[dcm2niix info] "); Rprintf(__VA_ARGS__); }
-		#define printWarning(...) { Rprintf("[dcm2niix WARNING] "); Rprintf(__VA_ARGS__); }
-		#define printError(...) { Rprintf("[dcm2niix ERROR] "); Rprintf(__VA_ARGS__); }
+		#define printMessage(...)   do { Rprintf("[dcm2niix info] "); Rprintf(__VA_ARGS__); } while (0)
+		#define printWarning(...)   do { Rprintf("[dcm2niix WARNING] "); Rprintf(__VA_ARGS__); } while (0)
+		#define printError(...)     do { Rprintf("[dcm2niix ERROR] "); Rprintf(__VA_ARGS__); } while (0)
 	#else
 		#ifdef myUseCOut
 			//for piping output to Qtextedit
@@ -48,5 +48,5 @@
 		// #define printError(...) ({ printMessage("Error: "); printMessage(__VA_ARGS__);})
 		#define printWarning(...) do {printMessage("Warning: "); printMessage(__VA_ARGS__);} while(0)
 
-	#endif //HAVE_R
+	#endif //USING_R
 #endif //_R_PRINT_H_

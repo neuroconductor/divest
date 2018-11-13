@@ -1,7 +1,7 @@
 #ifndef _IMAGE_LIST_H_
 #define _IMAGE_LIST_H_
 
-#ifdef HAVE_R
+#ifdef USING_R
 
 #define STRICT_R_HEADERS
 #include <Rcpp.h>
@@ -22,7 +22,7 @@ public:
     
     void append (nifti_image * const image, const std::string &name)
     {
-        RNifti::NiftiImage wrapper(image);
+        RNifti::NiftiImage wrapper(image, true);
         wrapper.setPersistence(true);
         Rcpp::RObject pointer = wrapper.toPointer(name);
         
