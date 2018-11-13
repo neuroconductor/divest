@@ -15,11 +15,11 @@
 /*****  incidental or otherwise, caused by any use of this document.     *****/
 /*****===================================================================*****/
 
+#include <stdbool.h> //requires VS 2015 or later
 #include "nifti1_io_core.h"
 #include <math.h>
 #include <stdlib.h>
 #include <sys/stat.h>
-#include <stdbool.h>
 #include <ctype.h>
 #include <string.h>
 #include <stddef.h>
@@ -31,7 +31,7 @@
 
 #include "print.h"
 
-#ifndef HAVE_R
+#ifndef USING_R
 void nifti_swap_8bytes( size_t n , void *ar )    // 4 bytes at a time
 {
     size_t ii ;
@@ -82,6 +82,10 @@ void nifti_swap_2bytes( size_t n , void *ar )    // 2 bytes at a time
 
 int isSameFloat (float a, float b) {
     return (fabs (a - b) <= FLT_EPSILON);
+}
+
+int isSameDouble (double a, double b) {
+    return (fabs (a - b) <= DBL_EPSILON);
 }
 
 ivec3 setiVec3(int x, int y, int z)
@@ -188,7 +192,7 @@ mat44 nifti_dicom2mat(float orient[7], float patientPosition[4], float xyzMM[4])
     return Q44;
 }
 
-#ifndef HAVE_R
+#ifndef USING_R
 float nifti_mat33_determ( mat33 R )   /* determinant of 3x3 matrix */
 {
     double r11,r12,r13,r21,r22,r23,r31,r32,r33 ;
@@ -235,7 +239,7 @@ mat33 nifti_mat33_transpose( mat33 A )  /* transpose 3x3 matrix */
     return B;
 }
 
-#ifndef HAVE_R
+#ifndef USING_R
 mat33 nifti_mat33_inverse( mat33 R )   /* inverse of 3x3 matrix */
 {
     double r11,r12,r13,r21,r22,r23,r31,r32,r33 , deti ;

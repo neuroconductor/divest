@@ -20,6 +20,9 @@
     .Call(C_readDirectory, path, flipY, crop, forceStack, verbosity, labelFormat, singleFile, scanOnly)
 }
 
+# Wrapper function to allow mocking in tests
+.readline <- function (...) base::readline(...)
+
 #' Read one or more DICOM directories
 #' 
 #' These functions are R wrappers around the DICOM-to-NIfTI conversion routines
@@ -52,7 +55,11 @@
 #'   from which file paths will be read.
 #' @param subset If \code{path} is a data frame, an expression which will be
 #'   evaluated in the context of the data frame to determine which series to
-#'   convert. Should evaluate to a logical vector.
+#'   convert. Should evaluate to a logical vector. If \code{path} is a
+#'   character vector, \code{scanDicom} is called on the path(s) first to
+#'   produce the data frame. If this is specified, and does not evaluate to
+#'   \code{NULL}, the read will be noninteractive, irrespective of the value of
+#'   the \code{interactive} argument.
 #' @param flipY If \code{TRUE}, the default, then images will be flipped in the
 #'   Y-axis. This is usually desirable, given the difference between
 #'   orientation conventions in the DICOM and NIfTI-1 formats.
@@ -103,14 +110,14 @@ readDicom <- function (path = ".", subset = NULL, flipY = TRUE, crop = FALSE, fo
             i <- i + 1
         }
         
-        dir.create(tempDirectory)
+        dir.create(tempDirectory, recursive=TRUE)
         on.exit(unlink(tempDirectory, recursive=TRUE))
         
         success <- file.symlink(files, tempDirectory)
         if (!all(success))
         {
             unlink(tempDirectory, recursive=TRUE)
-            dir.create(tempDirectory)
+            dir.create(tempDirectory, recursive=TRUE)
             success <- file.copy(files, tempDirectory)
         }
         if (!all(success))
@@ -122,20 +129,30 @@ readDicom <- function (path = ".", subset = NULL, flipY = TRUE, crop = FALSE, fo
     usingTempDirectory <- FALSE
     if (is.data.frame(path))
     {
-        subset <- eval(substitute(subset), path)
+        subset <- as.logical(eval(substitute(subset), path))
         if (!is.null(subset))
             path <- attr(path,"paths")[subset]
         else
             path <- attr(path,"paths")
         usingTempDirectory <- TRUE
     }
+    else if (!missing(subset))
+    {
+        info <- scanDicom(path, forceStack, verbosity, labelFormat)
+        subset <- as.logical(eval(substitute(subset), info))
+        if (!is.null(subset))
+        {
+            path <- attr(info,"paths")[subset]
+            usingTempDirectory <- TRUE
+        }
+    }
     
     results <- lapply(path, function(p) {
         if (usingTempDirectory)
         {
             absolute <- grepl(paste0("^([A-Za-z]:)?",.Platform$file.sep), p)
-            p[!absolute] <- file.path("..", p[!absolute])
-            readFromTempDirectory(".divest", p)
+            p[!absolute] <- file.path(getwd(), p[!absolute])
+            readFromTempDirectory(file.path(tempdir(),"divest"), p)
         }
         else if (!file.exists(p))
         {
@@ -157,7 +174,7 @@ readDicom <- function (path = ".", subset = NULL, flipY = TRUE, crop = FALSE, fo
             seriesNumbers <- sprintf(paste0("%",digits,"d: "), seq_len(nSeries))
             cat(paste0("\n", seriesNumbers, attr(info,"descriptions")))
             cat("\n\nType <Enter> for all series, 0 for none, or indices separated by spaces or commas")
-            selection <- readline("\nSelected series: ")
+            selection <- .readline("\nSelected series: ")
             if (selection == "")
             {
                 allResults <- .readPath(p, flipY, crop, forceStack, verbosity, labelFormat, FALSE, FALSE)
@@ -170,8 +187,9 @@ readDicom <- function (path = ".", subset = NULL, flipY = TRUE, crop = FALSE, fo
                 selection <- as.integer(unlist(strsplit(selection, "[, ]+", perl=TRUE)))
                 selectedResults <- lapply(selection, function(s) {
                     files <- attr(info,"paths")[[s]]
-                    files <- paste("..", substring(files,nchar(p)+1), sep=.Platform$file.sep)
-                    readFromTempDirectory(file.path(p,paste0(".divest",as.character(s))), files)
+                    absolute <- grepl(paste0("^([A-Za-z]:)?",.Platform$file.sep), files)
+                    files[!absolute] <- file.path(getwd(), files[!absolute])
+                    readFromTempDirectory(file.path(tempdir(),paste0("divest",as.character(s))), files)
                 })
                 return (do.call(c,selectedResults))
             }
