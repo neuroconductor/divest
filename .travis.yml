@@ -1,6 +1,62 @@
 language: r
 cache: packages
-
+warnings_are_errors: true
+use_bioc: true
+bioc_required: true
+cran: http://cran.rstudio.com
+dist: trusty
+addons:
+  apt:
+    packages:
+    - libfftw3-dev
+    - libgsl0-dev
+    - libgsl0ldbl
+os:
+- linux
+- osx
+osx_image: xcode9
+r:
+- 3.2
+- 3.3
+- 3.4
+- release
+- devel
+matrix:
+  allow_failures:
+  - r: devel
+env:
+  global:
+  - RGL_USE_NULL=TRUE
+  - PROJECT_NAME=neuroconductor
+  - DISPLAY=:99.0
+  - R_REMOTES_NO_ERRORS_FROM_WARNINGS=true
+r_check_args: "--as-cran --install-args=--build"
+before_install:
+- ulimit -n 2048
+- export PROJ_DIR=`basename $PWD`
+- fname=travis_helpers.sh
+- wget -O ${fname} http://bit.ly/travis_helpers
+- cat ${fname}; source ${fname}; rm ${fname}
+- cat DESCRIPTION
+- start_xvfb ;
+- export rver=`r_version`; echo $rver ;
+- if [ "$TRAVIS_OS_NAME" = "osx" ]; then no_open_mp ; fi
+- jags_install ;
+- v8_install ;
+- dcmtk_install ;
+- remove_neuroc_packages
+- cat DESCRIPTION
+- install_remotes_no_dep
+- cat DESCRIPTION
+- export PACKAGE_NAME=`package_name`
+- echo "Package Name is $PACKAGE_NAME"
+- if [[ "${PACKAGE_NAME}" == "waveslim" ]]; then fftw_install ; fi
+- if [[ "${PACKAGE_NAME}" == "dti" ]]; then gsl_install ; fi
+- if [[ "${PACKAGE_NAME}" == "ROpenCVLite" || "${PACKAGE_NAME}" == "Rvision" ]]; then
+  shopt -s expand_aliases ; x=`Rscript -e "cat(Sys.which('R'))"` ; echo "reset R"
+  ; alias R="travis_wait 100 ${x}" ; fi
+- install_python_requirements ;
+- R CMD javareconf ;
 after_success:
 - dump_logs
 after_failure:
@@ -22,7 +78,7 @@ deploy:
   on:
     tags: true
   api-key:
-    secure: Z0UDA7ivcCleFyGnH9E0+kU2bvVKL3Z/Nw8lp1C+5ae2EsCFDmujLn3L5jSIY+d+MjY6Y7YrgpmtWBjhPW5+8svIsc641209q+FfURBS9ytRQU/yNSkNuAZGNrC1DciDiKH6HmIgBu4yqbw71rPxAUhlBGbDe6g+WqxLY8lppWkzT6EA1rF47pyPlsEIHEYGT7IGiamWvWw06OWpIrvCo0KRHayilTYIj4FBAQmzNmLCvvkDzNhzm+RXWNoeLKOHdC7luHAi7JAUTaJsDf9Ughdzgj+YPNS9yjl55Rp9QQQJeqv8tcONoA3GAm8GMJIdLQHQtidITGbXYeWUjEd6Gppz4IXEjfucCsB0xeOBT5LdgOvovWduW5mobYjAJtF2sXefRQxUILn3poZ/muFvsAMI5qHwKUGB1jKdPoxAtGhU5WqRuw9NrsMfqRIoa4D2CXSo2/6wxNMvfh9iRXOcYEQnX2gcsqTAh8Umawdf+yY3NV+srSO1syadF63j8j0oPkX+UovMsmV4F/cqsMkjZm1qqjwQnJnKfkBc3gT0RzuhVAh7uHXr7PWJv4NFzcqjfsHmxVbGfLkXm8Lav26g6Dm1wGiiI68AJWoEH6O5+ajFANRzuy/atVrLYXm9N3tBxtLkh0pXbKSXOYAni6zGFe5jqwha6hTYNQl3sAPK/IU=
+    secure: Nsf/9xHgVyewh8SUx0tCqOiCOTEXBAS90YHOQVu5Q12kpCpDpCMbjAlLfiXjf5e7ykSqBpcMp949B7Pkl9ZF1wqqX7ND0Qtu5iTR6rangB7V05DjRhj5qwZUnAj4RBv+hToY1fOAzaVguS/S4KJRTW/ayOF/qRSfobxrRMt2vn/n65ErbFkfippl2yZQhdI6Hk+J81zlUAstQfamNAqzTiKkY/dWM+DAt8jfdLPAoGxBRXKaVVZG+7XX+f6ZeEKMv1ULp1UsmY9N8xTcQhdLKxUlw/w7sEpCLycG5N7mTc8644j8fCgb3Ppz/o/NAtJ4YSjyso9LVsHHf4tBGsh2JI7NYhZ1HkA82mfAL+/OD7Zi0vroBJG7BR7vR5OQtk86g2S5+/K23XbrDfY0W41I/5fDECUbfzlDich5ao5JZOsjOiBYGjW++V4pZZWeDYlL4Bmc4/MXzGqym/Gy0CONp0v7/xsvME5Whw2xmBTTvpm5D4fYtcR2x8W4i/sdFq++kar19Ja8CVVwJzTaLvwOi0S2Gkvu3ZczQr5UVlE/CL39c9RUJ9l1WiK4sz+GvYALXmqZ/W2LQFkDj9NQ7qmWSGruCkmtF9GJtVwvr3dwGlHfYzILq3lvxXC7IzCPtjii+BHP7ZYwUOCSGyg6ogQ5KylvtndoAxC39rcuU422RC8=
 after_deploy:
 - if [[ "${TRAVIS_OS_NAME}" == "linux" && ${TRAVIS_R_VERSION_STRING} = "release" ]];
   then echo 'covr::coveralls(type = "all", quiet = FALSE)' > neuroc_covr.R ; travis_wait
