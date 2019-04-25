@@ -1,9 +1,7 @@
-^\./appveyor\.yml\.bak$
-^\./\.travis\.yml\.bak$
-^DESCRIPTION\.bak$
+^\.covrignore$
 ^\.travis\.yml$
 ^appveyor\.yml$
 ^README.Rmd$
-^dcm_qa$
-^dcm_qa_nih$
-^dcm_qa.R$
+^tests/dcm_qa$
+^tests/dcm_qa_nih$
+^tests/dcm_qa_uih$
