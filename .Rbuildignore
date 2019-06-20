@@ -5,6 +5,3 @@
 ^tests/dcm_qa$
 ^tests/dcm_qa_nih$
 ^tests/dcm_qa_uih$
-^DESCRIPTION\.bak$
-^\./\.travis\.yml\.bak$
-^\./appveyor\.yml\.bak$
