@@ -6,3 +6,6 @@
 ^tests/dcm_qa_nih$
 ^tests/dcm_qa_uih$
 ^tests/dcm_qa_stc$
+^DESCRIPTION\.bak$
+^\./\.travis\.yml\.bak$
+^\./appveyor\.yml\.bak$
