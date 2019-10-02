@@ -1,6 +1,6 @@
 language: r
-cache: packages
 warnings_are_errors: true
+cache: false
 use_bioc: true
 bioc_required: true
 cran: http://cran.rstudio.com
@@ -17,6 +17,8 @@ os:
 - linux
 - osx
 osx_image: xcode9
+services:
+- xvfb
 r:
 - 3.3
 - 3.4
@@ -32,6 +34,7 @@ env:
   - PROJECT_NAME=neuroconductor
   - DISPLAY=:99.0
   - R_REMOTES_NO_ERRORS_FROM_WARNINGS=true
+  - _R_CHECK_FORCE_SUGGESTS_=false
 r_check_args: "--as-cran --install-args=--build"
 before_install:
 - ulimit -n 2048
@@ -40,12 +43,14 @@ before_install:
 - wget -O ${fname} http://bit.ly/travis_helpers
 - cat ${fname}; source ${fname}; rm ${fname}
 - cat DESCRIPTION
-- start_xvfb ;
+- codename=`linux_codename`;
+- if [ "${codename}" = "trusty" ]; then start_xvfb ; fi
 - export rver=`r_version`; echo $rver ;
-- if [ "$TRAVIS_OS_NAME" = "osx" ]; then no_open_mp ; fi
-- jags_install ;
-- v8_install ;
-- dcmtk_install ;
+- if [ "$TRAVIS_OS_NAME" = "osx" ]; then no_open_mp ; brew install -v freetype ; fi
+- jags_install || true;
+- v8_install || true;
+- dcmtk_install || true;
+- gsl_install 2.1 || true ;
 - export cmake_version="3.11"
 - cmake --version
 - x=`cmake_setup`; echo "${x}"; eval ${x};
@@ -86,10 +91,12 @@ deploy:
   on:
     tags: true
   api-key:
-    secure: H8pPPkJzGp+ZIyc3vQr6CnbaumwFpg2dZBNFhHAuRptsAMiicvWjrM/5SE7kKQkMkBtVQL5XjLEhBsgaGTCxBYoQpKM80p0EM+CTT7s3Dq/CGHKiLVhydYNoZJhk1+eoJBRsO+i5dCw/XBURWZgLPodH1DF7jyqcY4J0cEevMyA++bIKTWxQCcBz8GpWW6IhTFU72caqiqVcHIQnr4Iuaj5wHYLmhFjjHybafv/QfBspr5Judw5Fv/MBZD7vyO12Rs/BrBSlmZ9y7TjoeyUClQViyKWZSL0Snd4sfWYtCFlMWFKNHZe+Ce6cGruyaExcWKtd16xRqWY9aGb5WjbQzvcmjfigazd1faYTVquL+tEd0mABc/X8dwVqnV17otCCKKgqshKjy3VY8KfXTaRLCgZglsqgqpHA5wBCo+2KKvMIau5k5xkCzVuYAMflHPdod21bViWhDu2+twR2AyjyXH2pgxsdxOOG8DXMLxcypqkwYxhFj/q7BX0hSzK3rCAoKR9mzuxZ9kZlpzaY1xS1inBrbfeSNisTb/GglPSSwwSRPq4v/T0d+4VikuWIw8vtdB5TuBAkwdo1vPqLNxet2lTQVxvEOJnp3xbnvp1BVWPrEQJtX/F90sAycl7aEdJuDVFN19g4PkcOJS5NBiX4LChdc37qxJ2UBHylZ3IHaEA=
+    secure: LvPw6kgHM6ED/+nZYabJGMlJn1TK+5jsUT775YStsW+LIzQxGUyGL+dSJ+xQ3HSDdh9uRae96+hcQQH4T4RkpjNG0zswRjuUOgf7iHwKteiU5qU7tlOdMX3ZZcsK91y47iTRVZR2tmFj/0VMqvwOPIqvjVgYZCyLjTsF/Rvo7jw//ooknMLzfZUDlIefzVTt8H0MBoS2kCBOIIFG4yff6NkCFob6RVLREomjIznL6A+uUmjh3EPP4Lfedye6ml5GLwYuxB0W76AXbm7H4iiZOJff4zefKg2IJQsLRcZFfLH8CQyd57Z9J2YHJpypWmRl2t/LnSCo3kzScJlsrmTuxbvdwpg6w8euK9ZNqm9D1+lUQIMmf8MAyMYWeiraSpkpruY+Bw9Ya4h+OaraW2JK4Q36fESn/m4gfw6Ul3PxpXNLR22pyjurwcMGrPUYdALzmcfwdm1I4mz7K9xwWfe1uX4m7qUHdJbz1nO30UvaN0VQ8QuRp9XOlL9QEpX9tMd2HSG9Hp8fPALTd3iBEWjRObcpkeoEhg3tuWP2AIGWFA8HKhB71NIB9ykKm/FlZeuNkHh208eVm6UL4goc7EhmDnAtWegtpheuwmm11yxT2GVnkwO5eOKEpybS44IzKc7tgYCpyguFc6ettrGLIo5IhnargdIDG99kcYe7hAm1RqQ=
 after_deploy:
 - echo "${PROJECT_NAME}" | grep -q "releases"; if [[ $? -eq 0 ]]; then run_coverage="false";
   else run_coverage=; fi;
 - if [[ "${TRAVIS_OS_NAME}" == "linux" && ${TRAVIS_R_VERSION_STRING} = "release" &&
   -z "${run_coverage}" ]]; then echo 'covr::coveralls(type = "all", quiet = FALSE)'
   > neuroc_covr.R ; travis_wait 100 Rscript neuroc_covr.R ; rm neuroc_covr.R ; fi
+
+#neuroc.deps version (SHA): 12c60ff
