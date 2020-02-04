@@ -1,6 +1,6 @@
 language: r
 warnings_are_errors: true
-cache: false
+cache: packages
 use_bioc: true
 bioc_required: true
 cran: http://cran.rstudio.com
@@ -12,13 +12,14 @@ addons:
     - libxml2-dev
     - libfftw3-dev
     - libgsl0-dev
-    - libgsl0ldbl
+    - mesa-common-dev
+    - libglu1-mesa-dev
+    - devscripts
 os:
 - linux
 - osx
 osx_image: xcode9.4
-services:
-- xvfb
+services: xvfb
 r:
 - 3.3
 - 3.4
@@ -35,8 +36,10 @@ env:
   - DISPLAY=:99.0
   - R_REMOTES_NO_ERRORS_FROM_WARNINGS=true
   - _R_CHECK_FORCE_SUGGESTS_=false
+  - CACHE_NAME="${TRAVIS_OS_NAME}-R-${TRAVIS_R_VERSION}"
 r_check_args: "--as-cran --install-args=--build"
 before_install:
+- if [ "$TRAVIS_DIST" = "trusty" ]; then sudo apt-get -y install libgsl0ldbl ; fi
 - ulimit -n 2048
 - export PROJ_DIR=`basename $PWD`
 - fname=travis_helpers.sh
@@ -44,11 +47,11 @@ before_install:
 - cat ${fname}; source ${fname}; rm ${fname}
 - cat DESCRIPTION
 - codename=`linux_codename`;
-- if [ "${codename}" = "trusty" ]; then start_xvfb ; fi
+- start_xvfb ;
 - export rver=`r_version`; echo $rver ;
 - if [ "$TRAVIS_OS_NAME" = "osx" ]; then no_open_mp ; brew install -v freetype ; fi
 - jags_install || true;
-- v8_install || true;
+- if `need_v8`; then v8_install || true; fi
 - dcmtk_install || true;
 - gsl_install 2.1 || true ;
 - export cmake_version="3.11"
@@ -64,15 +67,14 @@ before_install:
 - if [[ "${PACKAGE_NAME}" == "waveslim" ]]; then fftw_install ; fi
 - if [[ "${PACKAGE_NAME}" == "dti" || "${PACKAGE_NAME}" == "qMRI" ]]; then gsl_install
   ; fi
-- if [[ "${PACKAGE_NAME}" == "ROpenCVLite" || "${PACKAGE_NAME}" == "Rvision" ]]; then
-  shopt -s expand_aliases ; x=`Rscript -e "cat(Sys.which('R'))"` ; echo "reset R"
-  ; alias R="travis_wait 100 ${x}" ; fi
+- if [[ "${PACKAGE_NAME}" == "ROpenCVLite" || "${PACKAGE_NAME}" == "Rvision" || "${PACKAGE_NAME}"
+  == "rtapas" ]]; then shopt -s expand_aliases ; x=`Rscript -e "cat(Sys.which('R'))"`
+  ; echo "reset R" ; alias R="travis_wait 100 ${x}" ; fi
+- setup_python 3.6 false ;
 - install_python_requirements ;
 - R CMD javareconf ;
-after_success:
-- dump_logs
-after_failure:
-- dump_logs
+after_success: dump_logs
+after_failure: dump_logs
 before_deploy:
 - if [ "$TRAVIS_OS_NAME" = "osx" ]; then PKG_TARBALL=$(ls -1t *.tgz | head -n 1);
   PKG_TARBALL_WITH_R=`echo $PKG_TARBALL | sed 's/.tgz/_'"R${rver}"'.tgz/'` ; mv ${PKG_TARBALL}
@@ -91,7 +93,7 @@ deploy:
   on:
     tags: true
   api-key:
-    secure: o5P0PGQpHy0Bcb2FPFta78mJ+4uENo+T91xIcmihipPa7it4KWSeIF4EXIrlZf/7LRA8VXi/DTAJVbwwlisOvImozAk5PjUUoE7RMx+1FpAusBGCyvlaqF0AszpYh7kGUa0sLeDUAkXxtwqWkVI6XTS3SZIUOYF0Vz7A6RBIjFPyQcZvIwgDwWcGlJ9/4w7ufPrGGGwix4uBfIENSKmgebW+W1UB5GexuTin1wFQPnOvporPASuhDpB+RqizgDe/z2n4ibsf0uQjHrAtRxUxgfH7xxWNN2J0iz0J3aJ/hVbxJwvj+UE04hXORy7zXcvpi+cpR0njgMYUtkNJURVa6ua5LzvBY2dmMwJpyVIHJ6pweaohjj6W2B/EArG151m6BK7ucOIiB8QixooQYjOcK5CqqIu/of6AOCq45wfuriAy4TKLlBnz1jmDxOf6oMKFCznT4GwgeIhWWWEn30shxOCGJfTVXrk2i1bVGAf55rj4zqdOgQ6VIX6agN4YPmTeTdzbzSTycM0W1wX7YRrNj4wtrdvn0hgdcLom5V6n/WFaGd1RZwyrWGeeSG74+yZu2MRXBsVpeM2QZQm0nyDL9cJahzhPac77gprH2wGe8kQYoVzM5wNT11KfOMpzvC1Lx0p5YlbRPjPt3NaDF8IrrvAkHNZF+1E7j/PQYsSlhKU=
+    secure: LXRpeB276J3hOLsu32sT6kIBweIHW0gfKC/cNcCpC7xv3IshKUBVD75E4B4m3X9HJlIyM0u8wu57geY67MhVnmR1HssFcaqnxfenFve8od8INROoRYz/exnjdYiqvbNQ/6VM/lec5jHOYXaf1REyWYG5aBvO0QayY+4qQuhlmQVwvLpKhYtggMzXp0tSax5ZLlY6ZwWfTEjPeuXt9eqCVKkjptl0056gKTtdvmIe5fVUiqZUJf5M9wGWDrEXcGCAFRqAfAa3V5nNkG40Yo5EnazUH+eHOX4szKTPydlfu8tWvUdIi4koOYnQblswkW66S80LoLIMWekjOy9O4X4e/BQaquynZxEStDBFyVAf0EL70IK809Bg0ph+LH2+19oa1wuBu91+KLzHFOS/LtWC7cXNV3K2+8AhzqqhKZjVYDwDb3pI4CvHc+Y1vHBgtInrYDfhs3uleXNEsmIsMHJJ2w+DnUzEr6qZuv8Ut9K3lFTvwow7EJoaJO7NPN3aKimrtvhb1kLNy47gmfVZf4tGZK971BWZLbPsKJA5H5G+fO4DIWJDEpn5lR0HS3Yk9EqmmMVgSSqVAjl0NzqlIOZT78CTRTZ3Utanw44Y33e/gvorHJncYS0neXTi4ynYmm3oAM7h6JybQk1FpMeF2lcz+Tpmk1C+ET0twZVqfZ7LF5Q=
 after_deploy:
 - echo "${PROJECT_NAME}" | grep -q "releases"; if [[ $? -eq 0 ]]; then run_coverage="false";
   else run_coverage=; fi;
@@ -99,4 +101,4 @@ after_deploy:
   -z "${run_coverage}" ]]; then echo 'covr::coveralls(type = "all", quiet = FALSE)'
   > neuroc_covr.R ; travis_wait 100 Rscript neuroc_covr.R ; rm neuroc_covr.R ; fi
 
-#neuroc.deps version (SHA): a5aa5ca
+#neuroc.deps version (SHA): cec4ca6
