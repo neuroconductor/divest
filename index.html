@@ -7,9 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Get Images Out of DICOM Format Quickly • divest</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/all.min.css" integrity="sha256-PbSmjxuVAzJ6FPvNYsrXygfGhNJYyZ2GktDbkMBqQZg=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/v4-shims.min.css" integrity="sha256-A6jcAdwFD48VMjlI3GDxUd+eCQa7/KWy6G9oe/ovaPA=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
+<script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Get Images Out of DICOM Format Quickly">
 <meta property="og:description" content="Provides tools to sort DICOM-format medical image files,
         and convert them to NIfTI-1 format.">
@@ -18,7 +19,7 @@
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body>
+<body data-spy="scroll" data-target="#toc">
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">divest</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.2</span>
       </span>
     </div>
 
@@ -77,141 +78,155 @@
 </blockquote>
 <p>The <code>divest</code> package is a variant of <a href="http://www.mccauslandcenter.sc.edu/crnl/">Chris Rorden’s</a> excellent <a href="https://github.com/rordenlab/dcm2niix"><code>dcm2niix</code></a> DICOM-to-NIfTI conversion tool, which has been minimally restructured to support an in-memory interface to R. It links the speed and reliability of the popular <code>dcm2niix</code> to the R-native NIfTI tools provided by the <a href="https://github.com/jonclayden/RNifti"><code>RNifti</code> package</a>.</p>
 <p>The package is <a href="https://cran.r-project.org/package=divest">on CRAN</a>, and the latest development version of the package can always be installed from GitHub using the <code>devtools</code> package.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># install.packages("devtools")</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"jonclayden/divest"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="co"># install.packages("devtools")</span>
+<span class="kw">devtools</span>::<span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"jonclayden/divest"</span>)
+</pre></div>
 <p><strong>Please note that, like <code>dcm2niix</code>, the <code>divest</code> package is to be used for research purposes only, and is not a clinical tool. It comes with no warranty.</strong></p>
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
 <a href="#usage" class="anchor"></a>Usage</h2>
 <p>The package’s key function is <code>readDicom</code>, which scans a directory containing DICOM files, stacks related data into merged 3D or 4D images where appropriate, and returns a list of <code>niftiImage</code> objects. For example,</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(divest)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">path &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">"raw"</span>, <span class="dt">package=</span><span class="st">"divest"</span>)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">images &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/divest/man/readDicom.html">readDicom</a></span>(path, <span class="dt">interactive=</span><span class="ot">FALSE</span>, <span class="dt">verbosity=</span><span class="op">-</span><span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">## [dcm2niix <span class="al">WARNING</span>] Unable to determine manufacturer (0008,0070), so conversion is not tuned for vendor.</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">## [dcm2niix <span class="al">WARNING</span>] Unable to determine manufacturer (0008,0070), so conversion is not tuned for vendor.</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">## [dcm2niix info]  Warning: all images appear to be a single slice - please check slice/vector orientation</a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">## [dcm2niix <span class="al">WARNING</span>] Weird CSA 'ProtocolSliceNumber' (System/Miscellaneous/ImageNumbering reversed): VALIDATE SLICETIMING AND BVECS</a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">## [dcm2niix <span class="al">WARNING</span>] Check that 2D images are not mirrored.</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/jonclayden/divest">divest</a></span>)
+<span class="kw">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">"raw"</span>, package=<span class="st">"divest"</span>)
+<span class="kw">images</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/readDicom.html">readDicom</a></span>(<span class="kw">path</span>, interactive=<span class="fl">FALSE</span>, verbosity=<span class="op">-</span><span class="fl">1</span>)
+<span class="co">## [dcm2niix WARNING] Unable to determine manufacturer (0008,0070), so conversion is not tuned for vendor.</span>
+<span class="co">## [dcm2niix WARNING] Unable to determine manufacturer (0008,0070), so conversion is not tuned for vendor.</span>
+<span class="co">## [dcm2niix info]  Warning: all images appear to be a single slice - please check slice/vector orientation</span>
+<span class="co">## [dcm2niix WARNING] Weird CSA 'ProtocolSliceNumber' (System/Miscellaneous/ImageNumbering reversed): VALIDATE SLICETIMING AND BVECS</span>
+<span class="co">## [dcm2niix WARNING] Check that 2D images are not mirrored.</span>
+</pre></div>
 <p>The conversion is interactive by default, prompting the user to select which series to convert, but here we simply convert everything non-interactively. The minimal test dataset provided with the package contains two images from each of two acquisitions. (It is incomplete, hence the warnings.) We can see the basic properties of a converted composite image by printing it.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">images[[<span class="dv">2</span>]]</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">## Internal image: "T0_N_S8"</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">## - 96 x 96 x 1 x 2 voxels</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">## - 2.5 x 2.5 x 5 mm x 4.1 s per voxel</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="kw">images</span>[[<span class="fl">2</span>]]
+<span class="co">## Internal image: "T0_N_S8"</span>
+<span class="co">## - 96 x 96 x 1 x 2 voxels</span>
+<span class="co">## - 2.5 x 2.5 x 5 mm x 4.1 s per voxel</span>
+</pre></div>
 <p>Additional properties of the scanning sequence, such as the magnetic field strength used, are stored in attributes if they can be deduced from the DICOM files.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/attributes.html">attributes</a></span>(images[[<span class="dv">2</span>]])</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">## $imagedim</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">## [1] 96 96  1  2</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">## </a>
-<a class="sourceLine" id="cb4-5" data-line-number="5">## $pixdim</a>
-<a class="sourceLine" id="cb4-6" data-line-number="6">## [1] 2.5 2.5 5.0 4.1</a>
-<a class="sourceLine" id="cb4-7" data-line-number="7">## </a>
-<a class="sourceLine" id="cb4-8" data-line-number="8">## $pixunits</a>
-<a class="sourceLine" id="cb4-9" data-line-number="9">## [1] "mm" "s" </a>
-<a class="sourceLine" id="cb4-10" data-line-number="10">## </a>
-<a class="sourceLine" id="cb4-11" data-line-number="11">## $.nifti_image_ptr</a>
-<a class="sourceLine" id="cb4-12" data-line-number="12">## &lt;pointer: 0x7f94a7007780&gt;</a>
-<a class="sourceLine" id="cb4-13" data-line-number="13">## </a>
-<a class="sourceLine" id="cb4-14" data-line-number="14">## $class</a>
-<a class="sourceLine" id="cb4-15" data-line-number="15">## [1] "internalImage" "niftiImage"   </a>
-<a class="sourceLine" id="cb4-16" data-line-number="16">## </a>
-<a class="sourceLine" id="cb4-17" data-line-number="17">## $modality</a>
-<a class="sourceLine" id="cb4-18" data-line-number="18">## [1] "MR"</a>
-<a class="sourceLine" id="cb4-19" data-line-number="19">## </a>
-<a class="sourceLine" id="cb4-20" data-line-number="20">## $imageType</a>
-<a class="sourceLine" id="cb4-21" data-line-number="21">## [1] "ORIGINAL_PRIMARY_M_ND_NORM"</a>
-<a class="sourceLine" id="cb4-22" data-line-number="22">## </a>
-<a class="sourceLine" id="cb4-23" data-line-number="23">## $seriesNumber</a>
-<a class="sourceLine" id="cb4-24" data-line-number="24">## [1] 8</a>
-<a class="sourceLine" id="cb4-25" data-line-number="25">## </a>
-<a class="sourceLine" id="cb4-26" data-line-number="26">## $seriesDescription</a>
-<a class="sourceLine" id="cb4-27" data-line-number="27">## [1] "DTIb3000s5"</a>
-<a class="sourceLine" id="cb4-28" data-line-number="28">## </a>
-<a class="sourceLine" id="cb4-29" data-line-number="29">## $sequenceName</a>
-<a class="sourceLine" id="cb4-30" data-line-number="30">## [1] "ep_b2000#16"</a>
-<a class="sourceLine" id="cb4-31" data-line-number="31">## </a>
-<a class="sourceLine" id="cb4-32" data-line-number="32">## $protocolName</a>
-<a class="sourceLine" id="cb4-33" data-line-number="33">## [1] "DTIb3000s5"</a>
-<a class="sourceLine" id="cb4-34" data-line-number="34">## </a>
-<a class="sourceLine" id="cb4-35" data-line-number="35">## $fieldStrength</a>
-<a class="sourceLine" id="cb4-36" data-line-number="36">## [1] 1.494</a>
-<a class="sourceLine" id="cb4-37" data-line-number="37">## </a>
-<a class="sourceLine" id="cb4-38" data-line-number="38">## $flipAngle</a>
-<a class="sourceLine" id="cb4-39" data-line-number="39">## [1] 90</a>
-<a class="sourceLine" id="cb4-40" data-line-number="40">## </a>
-<a class="sourceLine" id="cb4-41" data-line-number="41">## $echoTime</a>
-<a class="sourceLine" id="cb4-42" data-line-number="42">## [1] 112</a>
-<a class="sourceLine" id="cb4-43" data-line-number="43">## </a>
-<a class="sourceLine" id="cb4-44" data-line-number="44">## $repetitionTime</a>
-<a class="sourceLine" id="cb4-45" data-line-number="45">## [1] 4100</a>
-<a class="sourceLine" id="cb4-46" data-line-number="46">## </a>
-<a class="sourceLine" id="cb4-47" data-line-number="47">## $sliceThickness</a>
-<a class="sourceLine" id="cb4-48" data-line-number="48">## [1] 5</a>
-<a class="sourceLine" id="cb4-49" data-line-number="49">## </a>
-<a class="sourceLine" id="cb4-50" data-line-number="50">## $sliceSpacing</a>
-<a class="sourceLine" id="cb4-51" data-line-number="51">## [1] 5</a>
-<a class="sourceLine" id="cb4-52" data-line-number="52">## </a>
-<a class="sourceLine" id="cb4-53" data-line-number="53">## $phaseEncodingSteps</a>
-<a class="sourceLine" id="cb4-54" data-line-number="54">## [1] 72</a>
-<a class="sourceLine" id="cb4-55" data-line-number="55">## </a>
-<a class="sourceLine" id="cb4-56" data-line-number="56">## $phaseEncodingLines</a>
-<a class="sourceLine" id="cb4-57" data-line-number="57">## [1] 96</a>
-<a class="sourceLine" id="cb4-58" data-line-number="58">## </a>
-<a class="sourceLine" id="cb4-59" data-line-number="59">## $pixelBandwidth</a>
-<a class="sourceLine" id="cb4-60" data-line-number="60">## [1] 900</a>
-<a class="sourceLine" id="cb4-61" data-line-number="61">## </a>
-<a class="sourceLine" id="cb4-62" data-line-number="62">## $phaseEncodingDirection</a>
-<a class="sourceLine" id="cb4-63" data-line-number="63">## [1] "j"</a>
-<a class="sourceLine" id="cb4-64" data-line-number="64">## </a>
-<a class="sourceLine" id="cb4-65" data-line-number="65">## $phaseEncodingSign</a>
-<a class="sourceLine" id="cb4-66" data-line-number="66">## [1] -1</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/attributes.html">attributes</a></span>(<span class="kw">images</span>[[<span class="fl">2</span>]])
+<span class="co">## $imagedim</span>
+<span class="co">## [1] 96 96  1  2</span>
+<span class="co">## </span>
+<span class="co">## $pixdim</span>
+<span class="co">## [1] 2.5 2.5 5.0 4.1</span>
+<span class="co">## </span>
+<span class="co">## $pixunits</span>
+<span class="co">## [1] "mm" "s" </span>
+<span class="co">## </span>
+<span class="co">## $.nifti_image_ptr</span>
+<span class="co">## &lt;pointer: 0x7ff2d3c3e590&gt;</span>
+<span class="co">## </span>
+<span class="co">## $class</span>
+<span class="co">## [1] "internalImage" "niftiImage"   </span>
+<span class="co">## </span>
+<span class="co">## $modality</span>
+<span class="co">## [1] "MR"</span>
+<span class="co">## </span>
+<span class="co">## $imageType</span>
+<span class="co">## [1] "ORIGINAL_PRIMARY_M_ND_NORM"</span>
+<span class="co">## </span>
+<span class="co">## $seriesNumber</span>
+<span class="co">## [1] 8</span>
+<span class="co">## </span>
+<span class="co">## $seriesDescription</span>
+<span class="co">## [1] "DTIb3000s5"</span>
+<span class="co">## </span>
+<span class="co">## $sequenceName</span>
+<span class="co">## [1] "ep_b2000#16"</span>
+<span class="co">## </span>
+<span class="co">## $protocolName</span>
+<span class="co">## [1] "DTIb3000s5"</span>
+<span class="co">## </span>
+<span class="co">## $fieldStrength</span>
+<span class="co">## [1] 1.494</span>
+<span class="co">## </span>
+<span class="co">## $flipAngle</span>
+<span class="co">## [1] 90</span>
+<span class="co">## </span>
+<span class="co">## $echoTime</span>
+<span class="co">## [1] 112</span>
+<span class="co">## </span>
+<span class="co">## $repetitionTime</span>
+<span class="co">## [1] 4100</span>
+<span class="co">## </span>
+<span class="co">## $sliceThickness</span>
+<span class="co">## [1] 5</span>
+<span class="co">## </span>
+<span class="co">## $sliceSpacing</span>
+<span class="co">## [1] 5</span>
+<span class="co">## </span>
+<span class="co">## $phaseEncodingSteps</span>
+<span class="co">## [1] 72</span>
+<span class="co">## </span>
+<span class="co">## $phaseEncodingLines</span>
+<span class="co">## [1] 96</span>
+<span class="co">## </span>
+<span class="co">## $pixelBandwidth</span>
+<span class="co">## [1] 900</span>
+<span class="co">## </span>
+<span class="co">## $phaseEncodingDirection</span>
+<span class="co">## [1] "j"</span>
+<span class="co">## </span>
+<span class="co">## $phaseEncodingSign</span>
+<span class="co">## [1] -1</span>
+</pre></div>
 <p>If desired, functions from the <code>RNifti</code> package can be used to inspect and modify the details of the converted NIfTI image, or to write it to file.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(RNifti)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/pkg/RNifti/man/niftiHeader.html">dumpNifti</a></span>(images[[<span class="dv">2</span>]])</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">## NIfTI-1 header</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">##     sizeof_hdr: 348</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">##       dim_info: 57</a>
-<a class="sourceLine" id="cb5-6" data-line-number="6">##            dim: 4  96  96  1  2  1  1  1</a>
-<a class="sourceLine" id="cb5-7" data-line-number="7">##      intent_p1: 0</a>
-<a class="sourceLine" id="cb5-8" data-line-number="8">##      intent_p2: 0</a>
-<a class="sourceLine" id="cb5-9" data-line-number="9">##      intent_p3: 0</a>
-<a class="sourceLine" id="cb5-10" data-line-number="10">##    intent_code: 0</a>
-<a class="sourceLine" id="cb5-11" data-line-number="11">##       datatype: 4</a>
-<a class="sourceLine" id="cb5-12" data-line-number="12">##         bitpix: 16</a>
-<a class="sourceLine" id="cb5-13" data-line-number="13">##    slice_start: 0</a>
-<a class="sourceLine" id="cb5-14" data-line-number="14">##         pixdim: -1.0  2.5  2.5  5.0  4.1  0.0  0.0  0.0</a>
-<a class="sourceLine" id="cb5-15" data-line-number="15">##     vox_offset: 352</a>
-<a class="sourceLine" id="cb5-16" data-line-number="16">##      scl_slope: 1</a>
-<a class="sourceLine" id="cb5-17" data-line-number="17">##      scl_inter: 0</a>
-<a class="sourceLine" id="cb5-18" data-line-number="18">##      slice_end: 0</a>
-<a class="sourceLine" id="cb5-19" data-line-number="19">##     slice_code: 0</a>
-<a class="sourceLine" id="cb5-20" data-line-number="20">##     xyzt_units: 10</a>
-<a class="sourceLine" id="cb5-21" data-line-number="21">##        cal_max: 0</a>
-<a class="sourceLine" id="cb5-22" data-line-number="22">##        cal_min: 0</a>
-<a class="sourceLine" id="cb5-23" data-line-number="23">## slice_duration: 0</a>
-<a class="sourceLine" id="cb5-24" data-line-number="24">##        toffset: 0</a>
-<a class="sourceLine" id="cb5-25" data-line-number="25">##        descrip: TE=1.1e+02;Time=0.000;phase=1</a>
-<a class="sourceLine" id="cb5-26" data-line-number="26">##       aux_file: </a>
-<a class="sourceLine" id="cb5-27" data-line-number="27">##     qform_code: 1</a>
-<a class="sourceLine" id="cb5-28" data-line-number="28">##     sform_code: 1</a>
-<a class="sourceLine" id="cb5-29" data-line-number="29">##      quatern_b: 0</a>
-<a class="sourceLine" id="cb5-30" data-line-number="30">##      quatern_c: 1</a>
-<a class="sourceLine" id="cb5-31" data-line-number="31">##      quatern_d: 0</a>
-<a class="sourceLine" id="cb5-32" data-line-number="32">##      qoffset_x: 122.0339</a>
-<a class="sourceLine" id="cb5-33" data-line-number="33">##      qoffset_y: -101.2288</a>
-<a class="sourceLine" id="cb5-34" data-line-number="34">##      qoffset_z: -55.42373</a>
-<a class="sourceLine" id="cb5-35" data-line-number="35">##         srow_x: -2.5000  0.0000  0.0000  122.0339</a>
-<a class="sourceLine" id="cb5-36" data-line-number="36">##         srow_y: 0.0000  2.5000  0.0000  -101.2288</a>
-<a class="sourceLine" id="cb5-37" data-line-number="37">##         srow_z: 0.00000  0.00000  5.00000  -55.42373</a>
-<a class="sourceLine" id="cb5-38" data-line-number="38">##    intent_name: </a>
-<a class="sourceLine" id="cb5-39" data-line-number="39">##          magic: n+1</a></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/RNifti/man/writeNifti.html">writeNifti</a></span>(images[[<span class="dv">2</span>]], <span class="st">"stack"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/jonclayden/RNifti">RNifti</a></span>)
+<span class="fu"><a href="https://rdrr.io/pkg/RNifti/man/niftiHeader.html">dumpNifti</a></span>(<span class="kw">images</span>[[<span class="fl">2</span>]])
+<span class="co">## NIfTI-1 header</span>
+<span class="co">##     sizeof_hdr: 348</span>
+<span class="co">##       dim_info: 57</span>
+<span class="co">##            dim: 4  96  96  1  2  1  1  1</span>
+<span class="co">##      intent_p1: 0</span>
+<span class="co">##      intent_p2: 0</span>
+<span class="co">##      intent_p3: 0</span>
+<span class="co">##    intent_code: 0 (Unknown)</span>
+<span class="co">##       datatype: 4 (INT16)</span>
+<span class="co">##         bitpix: 16</span>
+<span class="co">##    slice_start: 0</span>
+<span class="co">##         pixdim: -1.0  2.5  2.5  5.0  4.1  0.0  0.0  0.0</span>
+<span class="co">##     vox_offset: 352</span>
+<span class="co">##      scl_slope: 1</span>
+<span class="co">##      scl_inter: 0</span>
+<span class="co">##      slice_end: 0</span>
+<span class="co">##     slice_code: 0 (Unknown)</span>
+<span class="co">##     xyzt_units: 10</span>
+<span class="co">##        cal_max: 0</span>
+<span class="co">##        cal_min: 0</span>
+<span class="co">## slice_duration: 0</span>
+<span class="co">##        toffset: 0</span>
+<span class="co">##        descrip: TE=1.1e+02;Time=0.000;phase=1</span>
+<span class="co">##       aux_file: </span>
+<span class="co">##     qform_code: 1 (Scanner Anat)</span>
+<span class="co">##     sform_code: 1 (Scanner Anat)</span>
+<span class="co">##      quatern_b: 0</span>
+<span class="co">##      quatern_c: 1</span>
+<span class="co">##      quatern_d: 0</span>
+<span class="co">##      qoffset_x: 122.0339</span>
+<span class="co">##      qoffset_y: -101.2288</span>
+<span class="co">##      qoffset_z: -55.42373</span>
+<span class="co">##         srow_x: -2.5000  0.0000  0.0000  122.0339</span>
+<span class="co">##         srow_y: 0.0000  2.5000  0.0000  -101.2288</span>
+<span class="co">##         srow_z: 0.00000  0.00000  5.00000  -55.42373</span>
+<span class="co">##    intent_name: </span>
+<span class="co">##          magic: n+1</span>
+</pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/pkg/RNifti/man/writeNifti.html">writeNifti</a></span>(<span class="kw">images</span>[[<span class="fl">2</span>]], <span class="st">"stack"</span>)
+</pre></div>
 <p>It is also possible to obtain information about the available DICOM series without actually performing the conversion. The <code>scanDicom</code> function returns a data frame containing certain information about each series.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/divest/man/readDicom.html">scanDicom</a></span>(path))</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">## [dcm2niix info] Found 4 DICOM file(s)</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">##  [1] "label"             "rootPath"          "files"            </a>
-<a class="sourceLine" id="cb7-4" data-line-number="4">##  [4] "seriesNumber"      "seriesDescription" "patientName"      </a>
-<a class="sourceLine" id="cb7-5" data-line-number="5">##  [7] "studyDate"         "echoTime"          "repetitionTime"   </a>
-<a class="sourceLine" id="cb7-6" data-line-number="6">## [10] "echoNumber"        "phase"             "diffusion"</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="fu"><a href="reference/readDicom.html">scanDicom</a></span>(<span class="kw">path</span>))
+<span class="co">## [dcm2niix info] Found 4 DICOM file(s)</span>
+<span class="co">##  [1] "label"             "rootPath"          "files"            </span>
+<span class="co">##  [4] "seriesNumber"      "seriesDescription" "patientName"      </span>
+<span class="co">##  [7] "studyDate"         "echoTime"          "repetitionTime"   </span>
+<span class="co">## [10] "echoNumber"        "phase"             "diffusion"</span>
+</pre></div>
 <p>Elements of this data frame which can’t be determined from the DICOM metadata, for example due to anonymisation, will take the conventional <code>NA</code> value to indicate missing data.</p>
 </div>
 </div>
@@ -254,6 +269,7 @@
 <li><a href="https://travis-ci.org/jonclayden/divest"><img src="https://travis-ci.org/jonclayden/divest.svg?branch=master" alt="Build Status"></a></li>
 <li><a href="https://ci.appveyor.com/project/jonclayden/divest"><img src="https://ci.appveyor.com/api/projects/status/lc8v02uc1ywkskrc?svg=true" alt="Build status"></a></li>
 <li><a href="https://coveralls.io/github/jonclayden/divest?branch=master"><img src="https://coveralls.io/repos/github/jonclayden/divest/badge.svg?branch=master" alt="Coverage Status"></a></li>
+<li><a href="https://tinyverse.netlify.com"><img src="http://files.flakery.org/deps/divest.svg" alt="Dependencies"></a></li>
 </ul>
 </div>
 </div>
@@ -265,7 +281,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

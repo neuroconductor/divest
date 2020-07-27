@@ -17,16 +17,20 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
+
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/all.min.css" integrity="sha256-PbSmjxuVAzJ6FPvNYsrXygfGhNJYyZ2GktDbkMBqQZg=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/v4-shims.min.css" integrity="sha256-A6jcAdwFD48VMjlI3GDxUd+eCQa7/KWy6G9oe/ovaPA=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -57,7 +61,7 @@ them into a list of niftiImage objects." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -71,7 +75,7 @@ them into a list of niftiImage objects." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">divest</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.2</span>
       </span>
     </div>
 
@@ -119,16 +123,16 @@ potentially pertaining to more than one image series, read them and/or merge
 them into a list of <code>niftiImage</code> objects.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>readDicom</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>flipY</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>crop</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>forceStack</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbosity</span> <span class='kw'>=</span> <span class='fl'>0L</span>, <span class='kw'>labelFormat</span> <span class='kw'>=</span> <span class='st'>"T%t_N%n_S%s"</span>,
-  <span class='kw'>depth</span> <span class='kw'>=</span> <span class='fl'>5L</span>, <span class='kw'>interactive</span> <span class='kw'>=</span> <span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>())
+    <pre class="usage"><span class='fu'>readDicom</span>(path = <span class='st'>"."</span>, subset = <span class='kw'>NULL</span>, flipY = <span class='fl'>TRUE</span>, crop = <span class='fl'>FALSE</span>,
+  forceStack = <span class='fl'>FALSE</span>, verbosity = <span class='fl'>0L</span>, labelFormat = <span class='st'>"T%t_N%n_S%s"</span>,
+  depth = <span class='fl'>5L</span>, interactive = <span class='kw'>base</span>::<span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>())
 
-<span class='fu'>sortDicom</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>forceStack</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbosity</span> <span class='kw'>=</span> <span class='fl'>0L</span>,
-  <span class='kw'>labelFormat</span> <span class='kw'>=</span> <span class='st'>"T%t_N%n_S%s/%b"</span>, <span class='kw'>depth</span> <span class='kw'>=</span> <span class='fl'>5L</span>, <span class='kw'>nested</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>keepUnsorted</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>sortDicom</span>(path = <span class='st'>"."</span>, forceStack = <span class='fl'>FALSE</span>, verbosity = <span class='fl'>0L</span>,
+  labelFormat = <span class='st'>"T%t_N%n_S%s/%b"</span>, depth = <span class='fl'>5L</span>, nested = <span class='fl'>TRUE</span>,
+  keepUnsorted = <span class='fl'>FALSE</span>)
 
-<span class='fu'>scanDicom</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>forceStack</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbosity</span> <span class='kw'>=</span> <span class='fl'>0L</span>,
-  <span class='kw'>labelFormat</span> <span class='kw'>=</span> <span class='st'>"T%t_N%n_S%s"</span>, <span class='kw'>depth</span> <span class='kw'>=</span> <span class='fl'>5L</span>)</pre>
+<span class='fu'>scanDicom</span>(path = <span class='st'>"."</span>, forceStack = <span class='fl'>FALSE</span>, verbosity = <span class='fl'>0L</span>,
+  labelFormat = <span class='st'>"T%t_N%n_S%s"</span>, depth = <span class='fl'>5L</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -238,18 +242,21 @@ for vendor, <code>x</code> for study ID and <code>z</code> for sequence name. Fo
 <code>sortDicom</code> the label forms the new file path, and may include one or
 more slashes to create subdirectories. A ".dcm" suffix will be added to file
 names if no extension is specified.</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Jon Clayden &lt;code@clayden.org&gt;</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>path</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"raw"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"divest"</span>)
-<span class='fu'>scanDicom</span>(<span class='no'>path</span>)</div><div class='output co'>#&gt; [dcm2niix info] Found 4 DICOM file(s)</div><div class='output co'>#&gt;     label                                                   rootPath files
-#&gt; 2 T0_N_S8 /tmp/Rtmpa6r2Bw/temp_libpathd844e307b74/divest/extdata/raw     2
-#&gt; 1 T0_N_S9 /tmp/Rtmpa6r2Bw/temp_libpathd844e307b74/divest/extdata/raw     2
+    <pre class="examples"><div class='input'><span class='kw'>path</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"raw"</span>, package=<span class='st'>"divest"</span>)
+<span class='fu'>scanDicom</span>(<span class='kw'>path</span>)</div><div class='output co'>#&gt; [dcm2niix info] Found 4 DICOM file(s)</div><div class='output co'>#&gt;     label                                                    rootPath files
+#&gt; 1 T0_N_S8 /tmp/RtmpagHTRl/temp_libpath70a94f284e3b/divest/extdata/raw     2
+#&gt; 2 T0_N_S9 /tmp/RtmpagHTRl/temp_libpath70a94f284e3b/divest/extdata/raw     2
 #&gt;   seriesNumber seriesDescription patientName studyDate echoTime repetitionTime
-#&gt; 2            8        DTIb3000s5        &lt;NA&gt;      &lt;NA&gt;   112.00           4100
-#&gt; 1            9       fl3D_t1_sag        &lt;NA&gt;      &lt;NA&gt;     4.94             11
+#&gt; 1            8        DTIb3000s5        &lt;NA&gt;      &lt;NA&gt;   112.00           4100
+#&gt; 2            9       fl3D_t1_sag        &lt;NA&gt;      &lt;NA&gt;     4.94             11
 #&gt;   echoNumber phase diffusion
-#&gt; 2         NA FALSE      TRUE
-#&gt; 1         NA FALSE     FALSE</div><div class='input'><span class='fu'>readDicom</span>(<span class='no'>path</span>, <span class='kw'>interactive</span><span class='kw'>=</span><span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; [dcm2niix info] Found 4 DICOM file(s)
+#&gt; 1         NA FALSE      TRUE
+#&gt; 2         NA FALSE     FALSE</div><div class='input'><span class='fu'>readDicom</span>(<span class='kw'>path</span>, interactive=<span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; [dcm2niix info] Found 4 DICOM file(s)
 #&gt; [dcm2niix WARNING] Unable to determine manufacturer (0008,0070), so conversion is not tuned for vendor.
 #&gt; [dcm2niix WARNING] All images appear to be a single slice - please check slice/vector orientation
 #&gt; [dcm2niix WARNING] Weird CSA 'ProtocolSliceNumber' (System/Miscellaneous/ImageNumbering reversed): VALIDATE SLICETIMING AND BVECS
@@ -268,16 +275,9 @@ names if no extension is specified.</p>
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
-    <h2>Author</h2>
-    <p>Jon Clayden &lt;code@clayden.org&gt;</p>
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -288,7 +288,7 @@ names if no extension is specified.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>
