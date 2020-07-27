@@ -19,5 +19,5 @@ Encoding: UTF-8
 RoxygenNote: 6.1.1
 Repository: Neuroconductor
 Remotes: 
-    neuroconductor/RNifti@e4f346f2c4d8a675ee6f0a2a2b382f22067fe775
+    neuroconductor/RNifti@48797c0c5ca5ea2e00a3576f584f08b9264e8daa
 biocViews: 
