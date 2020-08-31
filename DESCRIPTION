@@ -1,11 +1,12 @@
 Package: divest
-Version: 0.8.2
-Date: 2020-01-08
+Version: 0.9.0
+Date: 2020-08-30
 Title: Get Images Out of DICOM Format Quickly
 Authors@R: c(person("Jon", "Clayden", email="code@clayden.org",
-        role=c("aut","cre")), person("Chris", "Rorden", role="aut"),
-        person("Martin J", "Fiedler", role="cph"), person("Cong", "Xu",
-        role="cph"), person("Pascal", "Gloor", role="cph"))
+        role=c("aut","cre"), comment=c(ORCID="0000-0002-6608-0619")),
+        person("Chris", "Rorden", role="aut"), person("Martin J",
+        "Fiedler", role="cph"), person("Cong", "Xu", role="cph"),
+        person("Pascal", "Gloor", role="cph"))
 Maintainer: Jon Clayden <code@clayden.org>
 Imports: Rcpp (>= 0.11.0), RNifti (>= 0.3.0)
 Suggests: jsonlite, testthat, covr
@@ -17,7 +18,7 @@ URL: https://github.com/jonclayden/divest
 BugReports: https://github.com/jonclayden/divest/issues
 Encoding: UTF-8
 RoxygenNote: 6.1.1
-biocViews:
 Repository: Neuroconductor
-Remotes:  
-    neuroconductor/RNifti@acd7d45d8b9a857ad3d0e6d1baea5370c4ffe0b2
+Remotes: 
+    neuroconductor/RNifti@48797c0c5ca5ea2e00a3576f584f08b9264e8daa
+biocViews: 

@@ -1,11 +1,12 @@
 Package: divest
-Version: 0.8.2
-Date: 2020-01-08
+Version: 0.9.0
+Date: 2020-08-30
 Title: Get Images Out of DICOM Format Quickly
 Authors@R: c(person("Jon", "Clayden", email="code@clayden.org",
-        role=c("aut","cre")), person("Chris", "Rorden", role="aut"),
-        person("Martin J", "Fiedler", role="cph"), person("Cong", "Xu",
-        role="cph"), person("Pascal", "Gloor", role="cph"))
+        role=c("aut","cre"), comment=c(ORCID="0000-0002-6608-0619")),
+        person("Chris", "Rorden", role="aut"), person("Martin J",
+        "Fiedler", role="cph"), person("Cong", "Xu", role="cph"),
+        person("Pascal", "Gloor", role="cph"))
 Maintainer: Jon Clayden <code@clayden.org>
 Imports: Rcpp (>= 0.11.0), RNifti (>= 0.3.0)
 Suggests: jsonlite, testthat, covr
