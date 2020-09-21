@@ -21,4 +21,4 @@ RoxygenNote: 6.1.1
 biocViews:
 Repository: Neuroconductor
 Remotes:  
-    neuroconductor/RNifti@007fe6a58c02efce2caa0179d3effa1807bb0d40
+    neuroconductor/RNifti@20aafa4dc498f228961992ad7d7b486e9b967ca8
